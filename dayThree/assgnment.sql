@@ -53,15 +53,30 @@ for all borrowers who have more than five books checked out. */
 
 -- select * from tbl_book_loans;
 -- insert into tbl_book_loans (bookId, branchId, cardNo, dateOut, dueDate)
--- values (5, 17, 5, '2020-02-02', ADDDATE('2020-02-02', 7)),
--- 		(6, 17, 5, '2020-02-03', ADDDATE('2020-02-03', 7)),
+-- values  (5, 17, 5, '2020-02-02', ADDDATE('2020-02-02', 7)),
+-- 		   (6, 17, 5, '2020-02-03', ADDDATE('2020-02-03', 7)),
 --         (7, 17, 5, '2020-02-04', ADDDATE('2020-02-04', 7)),
 --         (8, 17, 5, '2020-02-05', ADDDATE('2020-02-05', 7));
+
+SELECT bo.name, bo.address, count(bl.branchId) from tbl_borrower bo
+INNER JOIN tbl_book_loans bl
+ON bo.cardNo = bl.cardNo
+GROUP BY bo.cardNo
+HAVING count(bl.branchId) >= 5;
 	
-/*7.  For each book authored (or co-authored) by "Stephen King", retrieve the title 
-and the number of copies owned by the library branch whose name is "Central"
+/*7.  For each book authored (or co-authored) by "Ernest Hemingway", retrieve the title 
+and the number of copies owned by the library branch whose name is "Central"*/
 
-
+select title, authorName, branchName, noOfCopies from tbl_book b
+inner join tbl_book_authors ba
+on b.bookId = ba.bookId
+inner join tbl_book_copies bc
+on b.bookId = bc.bookId
+inner join tbl_library_branch lb
+on bc.branchId = lb.branchId
+inner join tbl_author a
+on ba.authorId = a.authorId
+where branchName = 'Battersea Park' and authorName = 'Ernest Hemingway';
 
 
 select * from tbl_book_copies;
