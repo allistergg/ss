@@ -10,12 +10,21 @@ WHERE b.title = 'A Brief History of Time' and lb.branchName = 'Northcote';
 /*2. How many copies of the book titled 
 The Lost Tribe are owned by each library branch?
 */
-SELECT branchName, title, noOfCopies FROM tbl_library_branch lb
-LEFT JOIN tbl_book_copies bc
-ON lb.branchId = bc.branchId
-LEFT JOIN tbl_book b
-ON bc.bookId =  b.bookId
-WHERE title = 'A Brief History of Time';
+-- SELECT branchName, title, noOfCopies FROM tbl_library_branch lb
+-- LEFT JOIN tbl_book_copies bc
+-- ON lb.branchId = bc.branchId
+-- LEFT JOIN tbl_book b
+-- ON bc.bookId =  b.bookId
+-- WHERE title = 'A Brief History of Time';
+select lb1.branchName, title, noOfCopies from tbl_library_branch lb1
+left join
+(select branchName, title, noOfCopies from tbl_library_branch lb
+left join tbl_book_copies bc
+on lb.branchId = bc.branchId
+left join tbl_book b
+on bc.bookId = b.bookId
+where title = 'A Brief History of Time') dt
+on lb1.branchName = dt.branchName;
 
 /* 3. Retrieve the names of all borrowers who do not have any books checked out */
 select * from tbl_borrower bo
